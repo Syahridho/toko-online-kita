@@ -1,6 +1,8 @@
 import { FcGoogle } from "react-icons/fc";
 import Link from "next/link";
 import Button from "@/components/UI/Button";
+import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
 
 type PropTypes = {
   children: React.ReactNode;
@@ -12,6 +14,11 @@ type PropTypes = {
 
 const FormAuth = (props: PropTypes) => {
   const { children, title, link, textLink, onSubmit } = props;
+
+  const { query } = useRouter();
+
+  const callbackUrl: any = query.callbackUrl || "/";
+
   return (
     <div className="flex flex-col justify-center border rounded-md shadow p-12">
       <h1 className="font-bold text-2xl mb-3 text-center">{title}</h1>
@@ -33,6 +40,7 @@ const FormAuth = (props: PropTypes) => {
         <Button
           type="button"
           className="flex items-center justify-center gap-4 w-full border py-2 rounded-md !bg-slate-200 !text-slate-600 hover:!bg-slate-300 "
+          onClick={() => signIn("google", { callbackUrl, redirect: false })}
         >
           <FcGoogle />
           Masuk Dengan Google

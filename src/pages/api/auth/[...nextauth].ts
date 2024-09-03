@@ -1,7 +1,8 @@
-import { signIn } from "@/services/auth/services";
+import { loginWithGoogle, signIn } from "@/services/auth/services";
 import { compare } from "bcrypt";
 import { NextAuthOptions } from "next-auth";
 import NextAuth from "next-auth/next";
+import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import jwt from "jsonwebtoken";
 
@@ -35,6 +36,10 @@ const authOptions: NextAuthOptions = {
         }
       },
     }),
+    GoogleProvider({
+      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET || "",
+    }),
   ],
   callbacks: {
     async jwt({ token, account, profile, user }: any) {
@@ -46,8 +51,26 @@ const authOptions: NextAuthOptions = {
         token.image = user.image;
       }
 
+      if (account?.providers === "google") {
+        const data: any = {
+          fullname: user.name,
+          email: user.email,
+          image: user.image,
+          type: "google",
+        };
+
+        await loginWithGoogle(data, (data: any) => {
+          token.email = data.email;
+          token.fullname = data.fullname;
+          token.role = data.role;
+          token.image = data.image;
+          token.id = data.id;
+        });
+      }
+
       return token;
     },
+
     async session({ session, token }: any) {
       if ("email" in token) {
         session.user.email = token.email;

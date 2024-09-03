@@ -41,3 +41,33 @@ export async function signIn(email: string) {
     return null;
   }
 }
+
+export async function loginWithGoogle(
+  data: {
+    id?: string;
+    email: string;
+    password: string;
+    role?: string;
+    image: string;
+    created_at?: Date;
+    updated_at?: Date;
+  },
+  callback: Function
+) {
+  const user = await retrieveDataByField("users", "email", data.email);
+
+  if (user.length > 0) {
+    callback(user[0]);
+  } else {
+    data.role = "member";
+    data.created_at = new Date();
+    data.updated_at = new Date();
+    data.password = "";
+    await addData("users", data, (status: boolean, res: any) => {
+      data.id = res.push.replace("users/", "");
+      if (status) {
+        callback(data);
+      }
+    });
+  }
+}
