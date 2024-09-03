@@ -7,14 +7,17 @@ type PropTypes = {
   title?: string;
   link: string;
   textLink: string;
+  onSubmit?: Function | any;
 };
 
 const FormAuth = (props: PropTypes) => {
-  const { children, title, link, textLink } = props;
+  const { children, title, link, textLink, onSubmit } = props;
   return (
     <div className="flex flex-col justify-center border rounded-md shadow p-12">
       <h1 className="font-bold text-2xl mb-3 text-center">{title}</h1>
-      <form className="flex flex-col gap-2 w-full">{children}</form>
+      <form className="flex flex-col gap-2 w-full" onSubmit={onSubmit}>
+        {children}
+      </form>
       <h1 className="text-center text-sm my-2">
         {textLink}{" "}
         <Link href={link} className="text-blue-800 italic underline">
@@ -29,7 +32,7 @@ const FormAuth = (props: PropTypes) => {
       <div>
         <Button
           type="button"
-          className="flex items-center justify-center gap-4 w-full border py-2 rounded-md bg-slate-200 text-slate-600 hover:!bg-slate-300 "
+          className="flex items-center justify-center gap-4 w-full border py-2 rounded-md !bg-slate-200 !text-slate-600 hover:!bg-slate-300 "
         >
           <FcGoogle />
           Masuk Dengan Google
