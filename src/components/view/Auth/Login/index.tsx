@@ -11,12 +11,12 @@ const LoginView = () => {
   const callbackUrl: any = query.callbackUrl || "/";
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState<any>(null);
+  const [isError, setIsError] = useState<string>("");
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
-    setIsError(null);
+    setIsError("");
     const form = event.target as HTMLFormElement;
 
     try {
@@ -30,6 +30,7 @@ const LoginView = () => {
         setIsLoading(false);
         form.reset();
         push(callbackUrl);
+        setIsError("");
       } else {
         setIsLoading(false);
         setIsError("Email or password is incorrect");
@@ -53,7 +54,7 @@ const LoginView = () => {
         <FormInput type="password" id="password" placeholder="***">
           Password
         </FormInput>
-        {isError && <p className="text-red-500 text-sm">{isError}</p>}
+        {isError !== "" && <h1 className="text-red-500 text-sm">{isError}</h1>}
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "Loading..." : "Masuk"}
         </Button>

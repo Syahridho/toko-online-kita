@@ -20,7 +20,7 @@ const FormAuth = (props: PropTypes) => {
   const callbackUrl: any = query.callbackUrl || "/";
 
   return (
-    <div className="flex flex-col justify-center border rounded-md shadow p-12">
+    <div className="flex flex-col justify-center rounded-md p-8 sm:p-12 sm:shadow sm:border">
       <h1 className="font-bold text-2xl mb-3 text-center">{title}</h1>
       <form className="flex flex-col gap-2 w-full" onSubmit={onSubmit}>
         {children}

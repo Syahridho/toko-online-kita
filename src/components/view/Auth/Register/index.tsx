@@ -10,12 +10,12 @@ const RegisterView = () => {
   const { push } = useRouter();
 
   const [isLoading, setIsloading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<any>(null);
+  const [isError, setIsError] = useState<string>("");
 
   const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsloading(true);
-    setIsError(null);
+    setIsError("");
     const form = event.target as HTMLFormElement;
     const data = {
       fullname: form.fullname.value,
@@ -30,13 +30,14 @@ const RegisterView = () => {
         form.reset();
         setIsloading(false);
         push("/auth/login");
+        setIsError("");
       } else {
         setIsloading(false);
-        setIsError("Akun sudah dipakai");
+        setIsError("Ada masalah tolong kontak developer");
       }
     } catch (error) {
       setIsloading(false);
-      setIsError(error);
+      setIsError("Email sudah dipakai");
     }
   };
 
@@ -57,7 +58,7 @@ const RegisterView = () => {
         <FormInput type="password" id="password" placeholder="***">
           Password
         </FormInput>
-        {isError && <h1 className="text-red-500 text-sm">{isError}</h1>}
+        {isError !== "" && <h1 className="text-red-500 text-sm">{isError}</h1>}
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "Loading..." : "Daftar"}
         </Button>
