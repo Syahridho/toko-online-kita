@@ -9,7 +9,7 @@ const headers = {
 };
 
 const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXTAUTH_SECRET_API_URL,
   headers,
   timeout: 60 * 100,
 });
