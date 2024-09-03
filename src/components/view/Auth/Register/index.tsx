@@ -10,19 +10,18 @@ const RegisterView = () => {
   const { push } = useRouter();
 
   const [isLoading, setIsloading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<any>("");
+  const [isError, setIsError] = useState<any>(null);
 
   const handleRegister = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsloading(true);
+    setIsError(null);
     const form = event.target as HTMLFormElement;
     const data = {
       fullname: form.fullname.value,
       email: form.email.value,
       password: form.password.value,
     };
-
-    console.log(data);
 
     const result = await authServices.registerAccount(data);
 
@@ -37,7 +36,6 @@ const RegisterView = () => {
       }
     } catch (error) {
       setIsloading(false);
-      console.log(error);
       setIsError(error);
     }
   };
@@ -59,8 +57,10 @@ const RegisterView = () => {
         <FormInput type="password" id="password" placeholder="***">
           Password
         </FormInput>
-        {isError && <h1>{isError}</h1>}
-        <Button type="submit">{isLoading ? "Loading..." : "Daftar"}</Button>
+        {isError && <h1 className="text-red-500 text-sm">{isError}</h1>}
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "Loading..." : "Daftar"}
+        </Button>
       </FormAuth>
     </AuthLayout>
   );

@@ -32,3 +32,12 @@ export async function signUp(
     });
   }
 }
+
+export async function signIn(email: string) {
+  const data = await retrieveDataByField("users", "email", email);
+  if (data) {
+    return data[0];
+  } else {
+    return null;
+  }
+}
