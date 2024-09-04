@@ -18,7 +18,7 @@ export default function WithAuth(
     if (requireAuth.includes(pathname)) {
       const token = await getToken({
         req,
-        secret: process.env.NEXT_PUBLIC_API_URL,
+        secret: process.env.NEXTAUTH_SECRET_API_URL,
       });
       if (!token && !authPage.includes(pathname)) {
         const url = new URL("/auth/login", req.url);

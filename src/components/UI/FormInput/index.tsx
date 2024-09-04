@@ -4,15 +4,15 @@ import Label from "../Label";
 type PropTypes = {
   type: "number" | "text" | "file" | "email" | "password";
   id: string;
-  children: React.ReactNode;
+  title: string;
   placeholder?: string;
 };
 
 const FormInput = (props: PropTypes) => {
-  const { type, id, children, placeholder } = props;
+  const { type, id, title, placeholder } = props;
   return (
     <div className="flex flex-col">
-      <Label htmlFor={id}>{children}</Label>
+      <Label htmlFor={id}>{title}</Label>
       <Input type={type} id={id} name={id} placeholder={placeholder} />
     </div>
   );

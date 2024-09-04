@@ -49,15 +49,14 @@ const RegisterView = () => {
         textLink="Sudah punya akun? Masuk"
         onSubmit={(event: any) => handleRegister(event)}
       >
-        <FormInput type="text" id="fullname" placeholder="Nama">
-          Nama
-        </FormInput>
-        <FormInput type="email" id="email" placeholder="Email">
-          Email
-        </FormInput>
-        <FormInput type="password" id="password" placeholder="***">
-          Password
-        </FormInput>
+        <FormInput type="text" id="fullname" title="Nama" placeholder="Nama" />
+        <FormInput type="email" id="email" title="Email" placeholder="Email" />
+        <FormInput
+          type="password"
+          id="password"
+          title="Password"
+          placeholder="***"
+        />
         {isError !== "" && <h1 className="text-red-500 text-sm">{isError}</h1>}
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "Loading..." : "Daftar"}

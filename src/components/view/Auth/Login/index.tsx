@@ -48,12 +48,13 @@ const LoginView = () => {
         textLink="Belum punya akun? Daftar"
         onSubmit={(event: any) => handleSubmit(event)}
       >
-        <FormInput type="email" id="email" placeholder="Email">
-          Email
-        </FormInput>
-        <FormInput type="password" id="password" placeholder="***">
-          Password
-        </FormInput>
+        <FormInput type="email" id="email" title="Email" placeholder="Email" />
+        <FormInput
+          type="password"
+          id="password"
+          title="Password"
+          placeholder="***"
+        />
         {isError !== "" && <h1 className="text-red-500 text-sm">{isError}</h1>}
         <Button type="submit" disabled={isLoading}>
           {isLoading ? "Loading..." : "Masuk"}
