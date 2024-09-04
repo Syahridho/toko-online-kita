@@ -6,14 +6,21 @@ type PropTypes = {
   id: string;
   title: string;
   placeholder?: string;
+  defaultValue?: string;
 };
 
 const FormInput = (props: PropTypes) => {
-  const { type, id, title, placeholder } = props;
+  const { type, id, title, placeholder, defaultValue } = props;
   return (
     <div className="flex flex-col">
       <Label htmlFor={id}>{title}</Label>
-      <Input type={type} id={id} name={id} placeholder={placeholder} />
+      <Input
+        type={type}
+        id={id}
+        name={id}
+        placeholder={placeholder}
+        defaultValue={defaultValue}
+      />
     </div>
   );
 };

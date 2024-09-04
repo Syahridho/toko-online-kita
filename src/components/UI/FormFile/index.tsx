@@ -7,10 +7,20 @@ type PropTypes = {
   title: string;
   placeholder?: string;
   setUploadImage: any;
+  defaultValue?: string;
+  uploadedImage?: any;
 };
 
 const FormFile = (props: PropTypes) => {
-  const { type, id, title, placeholder, setUploadImage } = props;
+  const {
+    type,
+    id,
+    title,
+    placeholder,
+    setUploadImage,
+    defaultValue,
+    uploadedImage,
+  } = props;
   return (
     <div className="flex flex-col">
       <Label htmlFor={id}>{title}</Label>
@@ -23,6 +33,7 @@ const FormFile = (props: PropTypes) => {
           e.preventDefault();
           setUploadImage(e.currentTarget.files[0]);
         }}
+        defaultValue={defaultValue}
       />
     </div>
   );

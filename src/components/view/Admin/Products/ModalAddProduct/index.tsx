@@ -36,10 +36,10 @@ const ModalAddProducts = (props: any) => {
             if (result.status === 200) {
               form.reset();
               setAddProduct(false);
-              console.log("success kirim");
               setIsLoading(false);
+              const { data } = await productServices.getAllProducts();
+              setProductData(data.data);
             } else {
-              console.log("Failed Add");
               setIsLoading(false);
             }
           } else {
@@ -59,7 +59,7 @@ const ModalAddProducts = (props: any) => {
 
     const form: any = event.target as HTMLFormElement;
     const data = {
-      name: form.name.value,
+      title: form.title.value,
       price: parseInt(form.price.value),
       description: form.description.value,
       image: "",

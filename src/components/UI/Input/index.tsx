@@ -6,10 +6,20 @@ type PropTypes = {
   placeholder?: string;
   disabled?: boolean;
   onChange?: any;
+  defaultValue?: string;
 };
 
 const Input = (props: PropTypes) => {
-  const { type, id, name, className, placeholder, disabled, onChange } = props;
+  const {
+    type,
+    id,
+    name,
+    className,
+    placeholder,
+    disabled,
+    onChange,
+    defaultValue,
+  } = props;
   return (
     <input
       type={type}
@@ -19,6 +29,7 @@ const Input = (props: PropTypes) => {
       placeholder={placeholder}
       disabled={disabled}
       onChange={onChange}
+      defaultValue={defaultValue}
     />
   );
 };
