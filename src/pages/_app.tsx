@@ -14,7 +14,9 @@ export default function App({
 }: AppProps) {
   return (
     <SessionProvider session={session}>
-      <main className={poppins.className}>
+      <main
+        className={`${poppins.className} max-w-[500px] min-h-screen mx-auto relative`}
+      >
         <Component {...pageProps} />
       </main>
     </SessionProvider>

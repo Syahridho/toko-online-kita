@@ -1,8 +1,13 @@
+import Navbar from "@/components/contrainer/Navbar";
+
 const OrderPages = () => {
   return (
-    <div>
-      <div>hi</div>
-    </div>
+    <>
+      <div>
+        <div>hi</div>
+      </div>
+      <Navbar />
+    </>
   );
 };
 

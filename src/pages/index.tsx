@@ -1,3 +1,4 @@
+import Navbar from "@/components/contrainer/Navbar";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 
@@ -29,6 +30,7 @@ export default function Home() {
           </button>
         )}
       </div>
+      <Navbar />
     </>
   );
 }

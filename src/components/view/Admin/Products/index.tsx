@@ -7,8 +7,13 @@ import { FaRegTrashCan, FaPenToSquare, FaPlus } from "react-icons/fa6";
 import ModalDeleteProduct from "./ModalDeleteProduct";
 import ModalUpdateProduct from "./ModalUpdateProduct";
 
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { useRouter } from "next/router";
+
 const AdminProductView = (props: any) => {
   const { products } = props;
+
+  const { back } = useRouter();
 
   const [productData, setProductData] = useState<any>([]);
 
@@ -22,7 +27,17 @@ const AdminProductView = (props: any) => {
 
   return (
     <>
-      <div>
+      <div className="shadow mb-1 p-1">
+        <Button
+          type="button"
+          className="!w-fit text-2xl px-2 !bg-none"
+          onClick={() => back()}
+        >
+          <IoArrowBackCircleOutline />
+        </Button>
+        <h1 className="absolute top-3 left-1/2 transform -translate-x-1/2">
+          Produk
+        </h1>
         <Button
           type="button"
           className="!w-fit p-4 fixed right-5 bottom-5"
