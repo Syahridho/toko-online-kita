@@ -21,9 +21,9 @@ const ModalDeleteProduct = (props: any) => {
           deleteProduct.image.split("%2F")[3].split("?")[0]
         }`,
         async (status: boolean) => {
-          setDeleteProduct({});
           const { data } = await productServices.getAllProducts();
           setProductData(data.data);
+          setDeleteProduct({});
         }
       );
     } else {

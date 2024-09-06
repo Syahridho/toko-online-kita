@@ -35,10 +35,10 @@ const ModalAddProducts = (props: any) => {
 
             if (result.status === 200) {
               form.reset();
-              setAddProduct(false);
-              setIsLoading(false);
               const { data } = await productServices.getAllProducts();
               setProductData(data.data);
+              setIsLoading(false);
+              setAddProduct(false);
             } else {
               setIsLoading(false);
             }

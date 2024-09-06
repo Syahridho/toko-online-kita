@@ -37,10 +37,10 @@ const ModalUpdateProduct = (props: Proptypes) => {
 
     if (result.status === 200) {
       form.reset();
-      setIsLoading(false);
-      setUpdateProduct({});
       const { data } = await productServices.getAllProducts();
       setProductData(data.data);
+      setIsLoading(false);
+      setUpdateProduct({});
     } else {
       setIsLoading(false);
     }
