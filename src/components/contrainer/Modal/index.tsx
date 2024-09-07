@@ -22,7 +22,7 @@ const Modal = (props: PropTypes) => {
     };
   }, [onClose]);
   return (
-    <div className="fixed w-screen h-screen z-50 bg-black bg-opacity-60 flex justify-center items-center top-0">
+    <div className="fixed w-screen h-screen z-50 bg-black bg-opacity-60 flex justify-center items-center top-0 left-0">
       <div
         className="bg-white p-8 rounded w-[90vw] border overflow-y-auto"
         ref={ref}

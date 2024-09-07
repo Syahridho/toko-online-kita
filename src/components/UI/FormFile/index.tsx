@@ -2,18 +2,16 @@ import Input from "../Input";
 import Label from "../Label";
 
 type PropTypes = {
-  type: "number" | "text" | "file" | "email" | "password";
   id: string;
   title: string;
   placeholder?: string;
-  setUploadImage: any;
+  setUploadImage?: any;
   defaultValue?: string;
   uploadedImage?: any;
 };
 
 const FormFile = (props: PropTypes) => {
   const {
-    type,
     id,
     title,
     placeholder,
@@ -25,7 +23,7 @@ const FormFile = (props: PropTypes) => {
     <div className="flex flex-col">
       <Label htmlFor={id}>{title}</Label>
       <Input
-        type={type}
+        type="file"
         id={id}
         name={id}
         placeholder={placeholder}

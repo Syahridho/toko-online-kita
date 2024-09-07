@@ -91,7 +91,6 @@ const ModalAddProducts = (props: any) => {
           />
         )}
         <FormFile
-          type="file"
           id="image"
           title="Gambar Produk"
           setUploadImage={setUploadedImage}

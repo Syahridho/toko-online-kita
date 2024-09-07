@@ -91,7 +91,6 @@ const ModalUpdateProduct = (props: Proptypes) => {
           alt="image"
         />
         <FormFile
-          type="file"
           id="image"
           title="Gambar Produk"
           uploadedImage={uploadedImage}
