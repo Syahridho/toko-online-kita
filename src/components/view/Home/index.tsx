@@ -1,8 +1,12 @@
+import Button from "@/components/UI/Button";
+import Input from "@/components/UI/Input";
 import productServices from "@/services/product";
 import convertIDR from "@/utils/currency";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { IoCartOutline } from "react-icons/io5";
 
 const HomeView = () => {
   const { push } = useRouter();
@@ -23,8 +27,17 @@ const HomeView = () => {
   }, []);
 
   return (
-    <div>
-      <div className="mt-12">
+    <div className="p-2">
+      <div className="flex gap-4 items-center justify-center">
+        <Input type="text" id="search" name="search" placeholder="Search" />
+        <Link
+          href={"/cart"}
+          className="!w-fit p-2 !h-full mt-0 text-gray-600 bg-white shadow border border-grey-400"
+        >
+          <IoCartOutline />
+        </Link>
+      </div>
+      <div className="mt-4 flex flex-col gap-2">
         {productData.map((product: any) => (
           <div
             key={product.id}

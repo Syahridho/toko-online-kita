@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { AiOutlineHome } from "react-icons/ai";
 import { BsPersonCircle } from "react-icons/bs";
 import { CgNotes } from "react-icons/cg";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 const NavItems = [
   {

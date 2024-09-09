@@ -1,9 +1,9 @@
-import ProductView from "@/components/view/Product";
+import ProductDetailView from "@/components/view/ProductDetail";
 
 const ProductPages = () => {
   return (
     <>
-      <ProductView />
+      <ProductDetailView />
     </>
   );
 };
