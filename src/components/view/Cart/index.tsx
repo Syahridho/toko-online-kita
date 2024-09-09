@@ -45,6 +45,74 @@ const CartView = () => {
     return total;
   };
 
+  const handlePlusCart = async (id: string) => {
+    let data = [];
+    data = carts.map((item: any) => {
+      if (item.id === id) {
+        item.qty += 1;
+      }
+      return item;
+    });
+
+    setCarts(data);
+
+    try {
+      const result = await userServices.addToCart({ carts: data });
+
+      if (result.status === 200) {
+        console.log("berhasil");
+      } else {
+        console.log("gagal");
+      }
+    } catch (error) {
+      console.log("gagal");
+    }
+  };
+
+  const handleMinusCart = async (id: string) => {
+    let data = [];
+    data = carts.map((item: any) => {
+      if (item.id === id) {
+        item.qty -= 1;
+      }
+      return item;
+    });
+
+    setCarts(data);
+
+    try {
+      const result = await userServices.addToCart({ carts: data });
+
+      if (result.status === 200) {
+        console.log("berhasil");
+      } else {
+        console.log("gagal");
+      }
+    } catch (error) {
+      console.log("gagal");
+    }
+  };
+
+  const handleDeleteCart = async (id: string) => {
+    const newCart = carts.filter((item: any) => {
+      return item.id !== id;
+    });
+
+    setCarts(newCart);
+
+    try {
+      const result = await userServices.addToCart({ carts: newCart });
+
+      if (result.status === 200) {
+        console.log("berhasil");
+      } else {
+        console.log("gagal");
+      }
+    } catch (error) {
+      console.log("gagal");
+    }
+  };
+
   useEffect(() => {
     getAllProducts();
   }, []);
@@ -66,8 +134,11 @@ const CartView = () => {
       </Button>
       <div className="flex flex-col gap-3">
         {carts.map((cart: any) => (
-          <Link href={`/products/${cart.id}`} key={cart.id}>
-            <div className="flex gap-3 p-3 border rounded shadow-sm cursor-pointer">
+          <div
+            key={cart.id}
+            className="flex gap-3 p-3 border rounded shadow-sm cursor-pointer"
+          >
+            <Link href={`/products/${cart.id}`}>
               {getProduct(cart.id)?.image && (
                 <Image
                   width={100}
@@ -77,28 +148,39 @@ const CartView = () => {
                   className="rounded"
                 />
               )}
-              <div className="flex justify-between w-full">
-                <div className="flex flex-col">
-                  <h1>{getProduct(cart.id)?.title}</h1>
-                  <h3>{convertIDR(`${getProduct(cart.id)?.price}`)}</h3>
-                  <h1>Jumlah : {cart.qty}</h1>
-                  <div className="flex gap-2 border-2 justify-between w-16 p-1 rounded text-slate-600">
-                    <button className="text-xs">
-                      <FaMinus />
-                    </button>
-                    <button className="text-xs">
-                      <FaPlus />
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <button className="text-red-500">
-                    <FiTrash2 />
+            </Link>
+
+            <div className="flex justify-between w-full">
+              <div className="flex flex-col">
+                <h1>{getProduct(cart.id)?.title}</h1>
+                <h3>{convertIDR(`${getProduct(cart.id)?.price}`)}</h3>
+                <div className="flex gap-2 border-2 justify-between w-20 p-1 rounded text-slate-600 mt-1">
+                  <button
+                    className="text-xs"
+                    onClick={() => handleMinusCart(cart.id)}
+                    disabled={cart.qty <= 1}
+                  >
+                    <FaMinus />
+                  </button>
+                  <h1 className="text-xs">{cart.qty}</h1>
+                  <button
+                    className="text-xs"
+                    onClick={() => handlePlusCart(cart.id)}
+                  >
+                    <FaPlus />
                   </button>
                 </div>
               </div>
+              <div>
+                <button
+                  className="text-red-500"
+                  onClick={() => handleDeleteCart(cart.id)}
+                >
+                  <FiTrash2 />
+                </button>
+              </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
       <div className="fixed bottom-0 left-0 bg-slate-100 w-full px-3 py-4 flex items-center justify-between">
