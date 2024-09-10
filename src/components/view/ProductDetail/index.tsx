@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { FaMinus, FaPlus } from "react-icons/fa6";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 
 const ProductDetailView = () => {
@@ -19,9 +20,11 @@ const ProductDetailView = () => {
 
   const [productDetail, setProductDetail] = useState<any>({});
   const [carts, setCarts] = useState<any>({});
+  const [toggleQty, setToggleQty] = useState(false);
+  const [itemQty, setItemQty] = useState(1);
 
-  const getProductDetail = async () => {
-    const { data } = await productServices.getDetailProduct(id as string);
+  const getProductDetail = async (id: string) => {
+    const { data } = await productServices.getDetailProduct(id);
     setProductDetail(data.data);
   };
 
@@ -35,7 +38,7 @@ const ProductDetailView = () => {
     if (carts?.filter((item: any) => item.id === id).length > 0) {
       newCarts = carts.map((item: any) => {
         if (item.id === id) {
-          item.qty += 1;
+          item.qty += itemQty;
         }
         return item;
       });
@@ -44,7 +47,7 @@ const ProductDetailView = () => {
         ...carts,
         {
           id: id,
-          qty: 1,
+          qty: itemQty,
         },
       ];
     }
@@ -67,7 +70,7 @@ const ProductDetailView = () => {
 
   useEffect(() => {
     try {
-      getProductDetail();
+      getProductDetail(id as string);
     } catch (error) {
       console.log(error);
     }
@@ -101,27 +104,49 @@ const ProductDetailView = () => {
           <h1>{convertIDR(productDetail.price)}</h1>
         </div>
       </div>
-      <div className="fixed bottom-0 right-0 w-full py-4 bg-slate-200 flex justify-end">
-        <button
-          className="py-2 px-12 rounded shadow border border-slate-800 text-slate-800 mr-2"
-          onClick={() => {
-            session.status === "unauthenticated"
-              ? push(`/auth/login?callbackUrl=${asPath}`)
-              : handleAddToCart();
-          }}
+      <div className="fixed bottom-0 right-0 w-full py-8 px-2 bg-slate-200">
+        <div
+          className={`gap-2 border-2 border-slate-600 justify-between w-20 p-1 rounded text-slate-600 transition duration-500 ${
+            toggleQty ? "flex" : "hidden"
+          }`}
         >
-          keranjang
-        </button>
-        <button
-          className="py-2 px-12 rounded shadow border border-slate-800 bg-slate-800 text-white mr-2"
-          onClick={() => {
-            session.status === "unauthenticated"
-              ? push(`/auth/login?callbackUrl=${asPath}`)
-              : handleBuy();
-          }}
-        >
-          Beli
-        </button>
+          <button
+            onClick={() => setItemQty(itemQty - 1)}
+            disabled={itemQty <= 1}
+          >
+            <FaMinus />
+          </button>
+          <h1>{itemQty}</h1>
+          <button onClick={() => setItemQty(itemQty + 1)}>
+            <FaPlus />
+          </button>
+        </div>
+        <div className="flex justify-end">
+          <button
+            className="py-2 px-12 rounded shadow border border-slate-800 text-slate-800 mr-2"
+            onClick={() => {
+              session.status === "unauthenticated"
+                ? push(`/auth/login?callbackUrl=${asPath}`)
+                : toggleQty
+                ? handleAddToCart()
+                : setToggleQty(true);
+            }}
+          >
+            keranjang
+          </button>
+          <button
+            className="py-2 px-12 rounded shadow border border-slate-800 bg-slate-800 text-white mr-2"
+            onClick={() => {
+              session.status === "unauthenticated"
+                ? push(`/auth/login?callbackUrl=${asPath}`)
+                : toggleQty
+                ? handleBuy()
+                : setToggleQty(true);
+            }}
+          >
+            Beli
+          </button>
+        </div>
       </div>
     </div>
   );

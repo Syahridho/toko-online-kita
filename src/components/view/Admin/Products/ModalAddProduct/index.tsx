@@ -3,6 +3,7 @@ import Button from "@/components/UI/Button";
 import FormFile from "@/components/UI/FormFile";
 import FormInput from "@/components/UI/FormInput";
 import FormTextArea from "@/components/UI/FormTextArea";
+import Select from "@/components/UI/Select";
 import { uploadFile } from "@/lib/firebase/services";
 import productServices from "@/services/product";
 import Image from "next/image";
@@ -61,6 +62,7 @@ const ModalAddProducts = (props: any) => {
     const data = {
       title: form.title.value,
       price: parseInt(form.price.value),
+      category: form.category.value,
       description: form.description.value,
       image: "",
     };
@@ -94,6 +96,14 @@ const ModalAddProducts = (props: any) => {
           id="image"
           title="Gambar Produk"
           setUploadImage={setUploadedImage}
+        />
+        <Select
+          label="Kategori"
+          name="category"
+          options={[
+            { label: "Makanan", value: "makanan" },
+            { label: "Minuman", value: "minuman" },
+          ]}
         />
         <FormInput type="text" id="title" title="Nama" />
         <FormInput type="number" id="price" title="Harga" />

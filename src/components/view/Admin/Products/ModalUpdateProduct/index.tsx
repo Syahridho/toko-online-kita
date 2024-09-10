@@ -3,6 +3,7 @@ import Button from "@/components/UI/Button";
 import FormFile from "@/components/UI/FormFile";
 import FormInput from "@/components/UI/FormInput";
 import FormTextArea from "@/components/UI/FormTextArea";
+import Select from "@/components/UI/Select";
 import { uploadFile } from "@/lib/firebase/services";
 import productServices from "@/services/product";
 import { Product } from "@/types/product.type";
@@ -95,6 +96,15 @@ const ModalUpdateProduct = (props: Proptypes) => {
           title="Gambar Produk"
           uploadedImage={uploadedImage}
           setUploadImage={setUploadedImage}
+        />
+        <Select
+          label="Kategori"
+          name="category"
+          options={[
+            { label: "Makanan", value: "makanan" },
+            { label: "Minuman", value: "minuman" },
+          ]}
+          defaultValue={updateProduct.category}
         />
         <FormInput
           type="text"
