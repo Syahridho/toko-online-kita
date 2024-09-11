@@ -29,11 +29,11 @@ const ModalChangeProfile = (props: any) => {
       });
       form.reset();
       setIsLoading(false);
-      setChangeProfile(false);
+      setChangeProfile();
     } else {
       setIsLoading(false);
       setIsError("Gagal");
-      setChangeProfile(false);
+      setChangeProfile();
     }
   };
 
@@ -65,7 +65,7 @@ const ModalChangeProfile = (props: any) => {
           <Button
             type="button"
             className="!bg-red-600"
-            onClick={() => setChangeProfile({})}
+            onClick={() => setChangeProfile(false)}
           >
             Batalkan
           </Button>

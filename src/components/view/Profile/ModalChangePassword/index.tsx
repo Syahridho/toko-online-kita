@@ -48,7 +48,7 @@ const ModalChangePassword = (props: any) => {
           <Button
             type="button"
             className="!bg-red-600"
-            onClick={() => setChangePassword({})}
+            onClick={() => setChangePassword(false)}
           >
             Batalkan
           </Button>

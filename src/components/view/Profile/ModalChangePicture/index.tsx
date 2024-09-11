@@ -35,7 +35,7 @@ const ModalChangePicture = (props: any) => {
             const result = await userServices.updateProfile(data);
             if (result.status === 200) {
               setProfile({ ...profile, image: newImageURL });
-              setChangeImage(false);
+              setChangeImage();
               form.reset();
               console.log("berhasil");
               setIsLoading(false);
