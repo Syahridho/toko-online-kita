@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
+import "react-loading-skeleton/dist/skeleton.css";
 import { Poppins } from "next/font/google";
 
 const poppins = Poppins({
