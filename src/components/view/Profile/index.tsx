@@ -35,26 +35,33 @@ const ProfileView = () => {
     if (status === "authenticated") {
       getProfile();
     }
+    setIsLoading(false);
   }, [status]);
 
   return (
     <>
       <div className="flex flex-col justify-center items-center pt-12">
-        {isLoading ? (
+        {isLoading || status === "loading" ? (
           <>
             <Skeleton circle width={100} height={100} />
             <Skeleton width={100} />
             <Skeleton width={100} className="mt-4" />
           </>
-        ) : (
+        ) : status === "authenticated" && profile ? (
           <>
-            <Image
-              width={100}
-              height={100}
-              src={profile.image}
-              alt={profile.id}
-              className="rounded-full shadow w-[100px] h-[100px] object-cover object-center"
-            />
+            {profile.image ? (
+              <Image
+                width={100}
+                height={100}
+                src={profile.image}
+                alt={profile.id}
+                className="rounded-full shadow w-[100px] h-[100px] object-cover object-center"
+              />
+            ) : (
+              <div className="rounded-full shadow w-[100px] h-[100px] flex items-center justify-center bg-slate-100">
+                {profile?.fullname?.charAt(0).toUpperCase()}
+              </div>
+            )}
             <h1>{profile.fullname}</h1>
             <button
               className="text-xs text-center mt-4 bg-green-200 px-2 py-1 rounded-full text-green-600 shadow-sm"
@@ -63,7 +70,7 @@ const ProfileView = () => {
               Ubah foto profile
             </button>
           </>
-        )}
+        ) : null}
       </div>
 
       <div className="flex flex-col mt-8">
@@ -71,22 +78,28 @@ const ProfileView = () => {
           <div className="p-2">
             <Skeleton count={4} height={25} />
           </div>
-        ) : (
+        ) : status !== "unauthenticated" ? (
           <>
-            <button
-              className="w-full p-2 shadow text-left text-slate-800"
-              onClick={() => setToggle({ ...toggle, changeProfile: true })}
-            >
-              Ganti Profile
-            </button>
-            {profile?.type !== "google" ? (
-              <button
-                className="w-full p-2 shadow text-left text-slate-800"
-                onClick={() => setToggle({ ...toggle, changePassword: true })}
-              >
-                Ganti Password
-              </button>
-            ) : null}
+            {profile && (
+              <>
+                <button
+                  className="w-full p-2 shadow text-left text-slate-800"
+                  onClick={() => setToggle({ ...toggle, changeProfile: true })}
+                >
+                  Ganti Profile
+                </button>
+                {profile?.type !== "google" ? (
+                  <button
+                    className="w-full p-2 shadow text-left text-slate-800"
+                    onClick={() =>
+                      setToggle({ ...toggle, changePassword: true })
+                    }
+                  >
+                    Ganti Password
+                  </button>
+                ) : null}
+              </>
+            )}
 
             {data?.user?.role === "admin" && (
               <>
@@ -105,7 +118,7 @@ const ProfileView = () => {
               </>
             )}
           </>
-        )}
+        ) : null}
       </div>
       {isLoading ? (
         <Skeleton width={100} height={35} className="m-2" />

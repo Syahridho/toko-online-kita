@@ -84,7 +84,7 @@ const HomeView = () => {
                   height={100}
                   src={product.image}
                   alt={product.id}
-                  className="rounded"
+                  className="rounded object-cover object-center"
                   loading="lazy"
                 />
                 <div className="flex flex-col">
