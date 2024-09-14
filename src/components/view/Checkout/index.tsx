@@ -17,12 +17,14 @@ const CheckOutView = () => {
   const session: any = useSession();
   const { back } = useRouter();
 
-  const [profile, setProfile] = useState([]);
+  const [profile, setProfile] = useState<any>([]);
   const [carts, setCarts] = useState([]);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectAddress, setSelectAddress] = useState(0);
   const [changeAddress, setChangeAddress] = useState<boolean>(false);
+  const [ongkir, setOngkir] = useState(1200);
+  const [pajak, setPajak] = useState(1000);
 
   const getProfile = async () => {
     try {
@@ -146,6 +148,16 @@ const CheckOutView = () => {
           )}
         </div>
         <hr className="my-4" />
+
+        <div className="text-xs text-slate-700 leading-6 border p-2 rounded mb-4">
+          <h1 className="!text-slate-950 font-medium">Rincian</h1>
+          <h1>Belanja : {convertIDR(getTotalPrice())}</h1>
+          <h1>Ongkir : {convertIDR(ongkir)}</h1>
+          <h1>Pajak Aplikasi :{convertIDR(pajak)}</h1>
+          <hr />
+          <h1>Total : {convertIDR(getTotalPrice() + pajak + ongkir)} </h1>
+        </div>
+
         <div className="flex flex-col gap-3">
           <button
             type="button"
@@ -157,8 +169,10 @@ const CheckOutView = () => {
             </h1>
             <div className="border rounded p-2 flex gap-2 justify-between items-center cursor-pointer">
               <p className="text-xs text-slate-500 w-full max-w-xs">
-                Jl. Sri Palas, Gg. Sri Amal 2, Rumbai Barat, Pekanbaru, Riau
-                {/* Tidak Ada */}
+                {
+                  profile?.address?.find((addr: any) => addr.isMain === true)
+                    ?.addressLine
+                }
               </p>
 
               <FaAngleRight className="text-right" />
@@ -199,6 +213,8 @@ const CheckOutView = () => {
         <ModalChangeAddress
           profile={profile}
           setProfile={setProfile}
+          selectAddress={selectAddress}
+          setSelectAddress={setSelectAddress}
           setChangeAddress={setChangeAddress}
         />
       ) : null}
