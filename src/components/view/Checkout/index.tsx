@@ -8,14 +8,37 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import Button from "@/components/UI/Button";
+import { FaLocationDot, FaAngleRight } from "react-icons/fa6";
+import { BiSolidDiscount } from "react-icons/bi";
+import { PiNotebookFill } from "react-icons/pi";
+import ModalChangeAddress from "./ModalChangeAddress";
 
 const CheckOutView = () => {
   const session: any = useSession();
   const { back } = useRouter();
 
+  const [profile, setProfile] = useState([]);
   const [carts, setCarts] = useState([]);
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [selectAddress, setSelectAddress] = useState(0);
+  const [changeAddress, setChangeAddress] = useState<boolean>(false);
+
+  const getProfile = async () => {
+    try {
+      const { data } = await userServices.getProfile();
+      setProfile(data.data);
+      if (data?.data?.address.length > 0) {
+        data.data.address.filter((address: { isMain: boolean }, id: number) => {
+          if (address.isMain) {
+            setSelectAddress(id);
+          }
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getCarts = async () => {
     try {
@@ -62,59 +85,124 @@ const CheckOutView = () => {
   useEffect(() => {
     if (session?.data?.accessToken) {
       getCarts();
+      getProfile();
     }
   }, [session]);
 
   return (
-    <div className="p-3">
-      <div>
-        <Button
-          type="button"
-          className="!w-fit text-2xl px-2 !bg-none mb-4"
-          onClick={() => back()}
-        >
-          <IoArrowBackCircleOutline />
-        </Button>
-      </div>
-      <div>
-        {isLoading ? (
-          <div className="flex gap-4 p-3 border shadow rounded">
-            <div className="">
-              <Skeleton width={75} height={75} />
-            </div>
-            <div className="w-full">
-              <Skeleton className="mb-3 " />
-              <div className="w-1/2">
-                <Skeleton />
+    <>
+      <div className="p-3">
+        <div>
+          <Button
+            type="button"
+            className="!w-fit text-2xl px-2 !bg-none mb-4"
+            onClick={() => back()}
+          >
+            <IoArrowBackCircleOutline />
+          </Button>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          {isLoading ? (
+            <div className="flex gap-4 p-3 border shadow rounded">
+              <div className="">
+                <Skeleton width={75} height={75} />
               </div>
-            </div>
-          </div>
-        ) : (
-          carts.map((cart: any) => (
-            <div
-              key={cart.id}
-              className="flex gap-3 p-3 border rounded shadow-sm"
-            >
-              {getProduct(cart.id)?.image && (
-                <Image
-                  width={100}
-                  height={100}
-                  src={`${getProduct(cart.id)?.image}`}
-                  alt={cart.id}
-                  className="rounded object-cover object-center"
-                />
-              )}
-              <div className="flex justify-between w-full">
-                <div className="flex flex-col">
-                  <h1>{getProduct(cart.id)?.title}</h1>
-                  <h3>{convertIDR(`${getProduct(cart.id)?.price}`)}</h3>
+              <div className="w-full">
+                <Skeleton className="mb-3 " />
+                <div className="w-1/2">
+                  <Skeleton />
                 </div>
               </div>
             </div>
-          ))
-        )}
+          ) : (
+            carts.map((cart: any) => (
+              <div
+                key={cart.id}
+                className="flex gap-3 p-3 border rounded shadow-sm"
+              >
+                {getProduct(cart.id)?.image && (
+                  <Image
+                    width={80}
+                    height={50}
+                    src={`${getProduct(cart.id)?.image}`}
+                    alt={cart.id}
+                    className="rounded object-cover object-center"
+                  />
+                )}
+                <div className="flex justify-between w-full">
+                  <div className="flex flex-col">
+                    <h1>{getProduct(cart.id)?.title}</h1>
+                    <h2 className="text-sm text-slate-600">
+                      {cart.qty} Bungkus
+                    </h2>
+                    <h3 className="text-sm text-slate-600">
+                      {convertIDR(`${getProduct(cart.id)?.price}`)}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+        <hr className="my-4" />
+        <div className="flex flex-col gap-3">
+          <button
+            type="button"
+            onClick={() => setChangeAddress(true)}
+            className="text-left"
+          >
+            <h1 className="text-sm mb-1 text-slate-700 flex items-center gap-2">
+              <FaLocationDot /> Lokasi Penerimaan
+            </h1>
+            <div className="border rounded p-2 flex gap-2 justify-between items-center cursor-pointer">
+              <p className="text-xs text-slate-500 w-full max-w-xs">
+                Jl. Sri Palas, Gg. Sri Amal 2, Rumbai Barat, Pekanbaru, Riau
+                {/* Tidak Ada */}
+              </p>
+
+              <FaAngleRight className="text-right" />
+            </div>
+          </button>
+          <div>
+            <h1 className="text-sm mb-1 text-slate-700 flex items-center gap-2">
+              <BiSolidDiscount />
+              Promo
+            </h1>
+            <div className="border rounded p-2 flex gap-2 justify-between items-center cursor-pointer">
+              <p className="text-xs text-slate-500 w-full max-w-xs">
+                Tidak Ada
+              </p>
+              <FaAngleRight className="text-right" />
+            </div>
+          </div>
+          <div>
+            <h1 className="text-sm mb-1 text-slate-700 flex items-center gap-2">
+              <PiNotebookFill />
+              Catatan
+            </h1>
+            <textarea
+              name="noted"
+              id="noted"
+              className="border w-full rounded h-24 p-2"
+            />
+          </div>
+        </div>
+        <div className="fixed bottom-0 left-0 w-full bg-slate-200 px-2 py-1.5 flex justify-between items-center">
+          <h1>Total : {convertIDR(getTotalPrice())}</h1>
+          <Button type="button" className="!w-fit px-4">
+            Bayar
+          </Button>
+        </div>
       </div>
-    </div>
+      {changeAddress ? (
+        <ModalChangeAddress
+          profile={profile}
+          setProfile={setProfile}
+          setChangeAddress={setChangeAddress}
+        />
+      ) : null}
+    </>
   );
 };
 

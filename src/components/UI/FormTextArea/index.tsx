@@ -2,7 +2,7 @@ import Label from "../Label";
 
 type PropTypes = {
   id: string;
-  title: string;
+  title?: string;
   defaultValue?: string;
 };
 
