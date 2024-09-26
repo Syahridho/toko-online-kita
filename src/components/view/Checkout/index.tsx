@@ -12,6 +12,8 @@ import { FaLocationDot, FaAngleRight } from "react-icons/fa6";
 import { BiSolidDiscount } from "react-icons/bi";
 import { PiNotebookFill } from "react-icons/pi";
 import ModalChangeAddress from "./ModalChangeAddress";
+import Script from "next/script";
+import transactionServices from "@/services/transaction";
 
 const CheckOutView = () => {
   const session: any = useSession();
@@ -80,6 +82,24 @@ const CheckOutView = () => {
     return total;
   };
 
+  const handleCheckOut = async () => {
+    const payload = {
+      user: {
+        fullname: profile.fullname,
+        email: profile.email,
+        address: profile.address[selectAddress],
+      },
+      transaction: {
+        items: profile.carts,
+        total: getTotalPrice(),
+      },
+    };
+
+    const { data } = await transactionServices.generateTransaction(payload);
+
+    window.snap.pay(data.data.token);
+  };
+
   useEffect(() => {
     getAllProducts();
   }, []);
@@ -93,6 +113,12 @@ const CheckOutView = () => {
 
   return (
     <>
+      <Script
+        src={process.env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}
+        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT}
+        strategy="lazyOnload"
+      />
+
       <div className="p-3">
         <div>
           <Button
@@ -204,7 +230,11 @@ const CheckOutView = () => {
         </div>
         <div className="fixed bottom-0 left-0 w-full bg-slate-200 px-2 py-1.5 flex justify-between items-center">
           <h1>Total : {convertIDR(getTotalPrice())}</h1>
-          <Button type="button" className="!w-fit px-4">
+          <Button
+            type="button"
+            className="!w-fit px-4"
+            onClick={() => handleCheckOut()}
+          >
             Bayar
           </Button>
         </div>
