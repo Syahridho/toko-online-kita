@@ -1,11 +1,10 @@
 import Navbar from "@/components/contrainer/Navbar";
+import OrderView from "@/components/view/Orders";
 
 const OrderPages = () => {
   return (
     <>
-      <div>
-        <div>hi</div>
-      </div>
+      <OrderView />
       <Navbar />
     </>
   );
