@@ -11,10 +11,20 @@ const OrderView = () => {
   const [profile, setProfile] = useState<any>({});
   const [products, setProducts] = useState([]);
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState({
+    profile: true,
+    allProducts: true,
+  });
 
   const getProfile = async () => {
-    const { data } = await userServices.getProfile();
-    setProfile(data.data);
+    try {
+      const { data } = await userServices.getProfile();
+      setProfile(data.data);
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+    } finally {
+      setIsLoading((prev) => ({ ...prev, profile: false }));
+    }
   };
 
   const getProduct = (id: string) => {
@@ -23,16 +33,21 @@ const OrderView = () => {
   };
 
   const getAllProduct = async () => {
-    const { data } = await productServices.getAllProducts();
-    setProducts(data.data);
-
-    const transactionData = profile.transaction;
-
-    if (!transactionData) {
-      return;
+    try {
+      const { data } = await productServices.getAllProducts();
+      setProducts(data.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setIsLoading((prev) => ({ ...prev, allProducts: false }));
     }
+  };
 
-    const orders = transactionData.reduce((acc: any, transaction: any) => {
+  const getOrders = () => {
+    if (isLoading.profile || isLoading.allProducts) return;
+    if (!profile?.transaction) return;
+
+    const orders = profile.transaction.reduce((acc: any, transaction: any) => {
       transaction.items.forEach((item: { id: string; qty: number }) => {
         const product = getProduct(item.id);
         if (product) {
@@ -45,19 +60,43 @@ const OrderView = () => {
       });
       return acc;
     }, []);
+
     setOrders(orders);
   };
+
+  console.log(orders);
 
   useEffect(() => {
     if (status === "authenticated") {
       getProfile();
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (profile?.transaction) {
       getAllProduct();
     }
-  }, []);
+  }, [profile]);
+
+  useEffect(() => {
+    getOrders();
+  }, [isLoading, profile, products]);
 
   return (
-    <div className="p-4">
-      {profile ? (
+    <div className="p-4 flex flex-col gap-2">
+      {isLoading.profile || isLoading.allProducts ? (
+        <div className="flex gap-4 p-3 border shadow rounded">
+          <div className="">
+            <Skeleton width={75} height={75} />
+          </div>
+          <div className="w-full">
+            <Skeleton className="mb-3 " />
+            <div className="w-1/2">
+              <Skeleton />
+            </div>
+          </div>
+        </div>
+      ) : (
         orders?.map((item: any, index: number) => (
           <div key={index} className="w-full border rounded p-2 flex gap-2">
             <Image
@@ -76,18 +115,6 @@ const OrderView = () => {
             </div>
           </div>
         ))
-      ) : (
-        <div className="w-full border rounded p-2 flex gap-2">
-          <div>
-            <Skeleton width={50} height={50} />
-          </div>
-          <div className="w-full">
-            <Skeleton className="mb-3 " />
-            <div className="w-1/3">
-              <Skeleton />
-            </div>
-          </div>
-        </div>
       )}
     </div>
   );
