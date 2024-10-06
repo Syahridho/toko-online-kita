@@ -48,16 +48,18 @@ const OrderView = () => {
     if (!profile?.transaction) return;
 
     const orders = profile.transaction.reduce((acc: any, transaction: any) => {
-      transaction.items.forEach((item: { id: string; qty: number }) => {
-        const product = getProduct(item.id);
-        if (product) {
-          acc.push({
-            product,
-            qty: item.qty,
-            status: transaction.status,
-          });
-        }
-      });
+      if (transaction.items && Array.isArray(transaction.items)) {
+        transaction.items.forEach((item: { id: string; qty: number }) => {
+          const product = getProduct(item.id);
+          if (product) {
+            acc.push({
+              product,
+              qty: item.qty,
+              status: transaction.status,
+            });
+          }
+        });
+      }
       return acc;
     }, []);
 
@@ -96,7 +98,7 @@ const OrderView = () => {
             </div>
           </div>
         </div>
-      ) : (
+      ) : orders?.length > 0 ? (
         orders?.map((item: any, index: number) => (
           <div key={index} className="w-full border rounded p-2 flex gap-2">
             <Image
@@ -115,6 +117,8 @@ const OrderView = () => {
             </div>
           </div>
         ))
+      ) : (
+        <h1>Data kosong</h1>
       )}
     </div>
   );
