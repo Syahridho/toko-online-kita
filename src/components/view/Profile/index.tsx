@@ -115,6 +115,12 @@ const ProfileView = () => {
                 >
                   User
                 </Link>
+                <Link
+                  href={"/admin/orders"}
+                  className="w-full text-slate-800 p-2 shadow"
+                >
+                  Orderan
+                </Link>
               </>
             )}
           </>

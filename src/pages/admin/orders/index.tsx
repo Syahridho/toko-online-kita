@@ -1,9 +1,7 @@
+import OrderAdminView from "@/components/view/Admin/Orders";
+
 const AdminOrderPages = () => {
-  return (
-    <div>
-      <div>hi</div>
-    </div>
-  );
+  return <OrderAdminView />;
 };
 
 export default AdminOrderPages;
